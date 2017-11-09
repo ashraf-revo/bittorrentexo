@@ -21,13 +21,4 @@
         </plugins>
     </build>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.johnnei</groupId>
-            <artifactId>javatorrent-bittorrent</artifactId>
-            <version>0.5.1</version>
-        </dependency>
-
-    </dependencies>
-
 </project>
