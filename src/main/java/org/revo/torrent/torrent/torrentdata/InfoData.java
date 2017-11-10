@@ -21,7 +21,7 @@ public abstract class InfoData {
 
         try {
             byte[] pieceArr = ((String) base.get("pieces")).getBytes("ISO-8859-1");
-            for (int i = 0; i < pieceArr.length; i+=20){
+            for (int i = 0; i < pieceArr.length; i += 20) {
                 SHA1 hash = SHA1.fromByteArray(Arrays.copyOfRange(pieceArr, i, i + 20));
                 pieces.add(hash);
             }

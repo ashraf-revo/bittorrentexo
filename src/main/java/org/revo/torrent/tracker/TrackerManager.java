@@ -4,8 +4,6 @@ import org.revo.torrent.torrent.Torrent;
 import org.revo.torrent.util.Scheduler;
 
 import java.net.SocketAddress;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
@@ -27,29 +25,29 @@ public class TrackerManager {
         this.listener = torrent;
         trackers = trackerAddresses.stream().map(it ->
                 it.stream().map(itIn -> Tracker.fromAddress(this, itIn)).collect(Collectors.toList()))
-            .collect(Collectors.toList());
+                .collect(Collectors.toList());
     }
 
-    public void startManager(){
+    public void startManager() {
         Scheduler.submit(() -> {
-            if (scheduledFuture != null){
-                if (scheduledFuture.isDone() == false && scheduledFuture.cancel(false) == false){
+            if (scheduledFuture != null) {
+                if (scheduledFuture.isDone() == false && scheduledFuture.cancel(false) == false) {
                     return;
                 }
                 scheduledFuture = null;
             }
 
             Tracker connectedTracker = null;
-            for (List<Tracker> tierList : trackers){
-                for (Tracker tracker : tierList){
+            for (List<Tracker> tierList : trackers) {
+                for (Tracker tracker : tierList) {
                     tracker.sendInformation(getCommonInformationBuilder(listener).setPeerWanted(100).build());
-                    if (!tracker.hasFailed()){
+                    if (!tracker.hasFailed()) {
                         connectedTracker = tracker;
                         scheduledFuture = Scheduler.schedule(this::startManager, tracker.getInterval(), TimeUnit.NANOSECONDS);
                         break;
                     }
                 }
-                if (connectedTracker != null){
+                if (connectedTracker != null) {
                     tierList.remove(connectedTracker);
                     tierList.add(0, connectedTracker);
                     break;
@@ -59,7 +57,7 @@ public class TrackerManager {
     }
 
     public void onResponseReceived(Set<SocketAddress> response) {
-        if (response.size() != 0){
+        if (response.size() != 0) {
             listener.foundPeers(response);
         }
     }
@@ -68,7 +66,7 @@ public class TrackerManager {
 
     }
 
-    private TrackerTorrentInformation.Builder getCommonInformationBuilder(Torrent data){
+    private TrackerTorrentInformation.Builder getCommonInformationBuilder(Torrent data) {
         TrackerTorrentInformation.Builder builder = new TrackerTorrentInformation.Builder();
         builder.setCompact(true).setDownloaded(data.getDownloaded()).setUploaded(data.getUploaded())
                 .setLeft(data.getLeft()).setInfoHash(data.getTorrentData().getInfoHash().getByteRepresentation())

@@ -1,7 +1,6 @@
 package org.revo.torrent.util;
 
 import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;

@@ -24,6 +24,11 @@ public class TorrentData {
         info = infoMap.containsKey("files") ? new MultiFileInfoData(infoMap) : new SingleFileInfoData(infoMap);
 
         announceList = (List<List<String>>) baseMap.get("announce-list");
+        announce = (String) baseMap.get("announce");
+        creationDate = new Date(Long.valueOf(baseMap.get("creation date").toString()));
+        comment = (String) baseMap.get("comment");
+        createdBy = (String) baseMap.get("created by");
+        encoding = (String) baseMap.get("encoding");
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         try {
